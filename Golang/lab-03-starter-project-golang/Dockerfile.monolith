@@ -1,0 +1,7 @@
+FROM golang:1.22-alpine
+WORKDIR /src
+COPY go.* ./
+RUN go mod download  # лише залежності
+COPY . .
+RUN go build -o app .
+ENTRYPOINT ["/src/app"]

@@ -1,0 +1,9 @@
+FROM golang:1.22-alpine AS builder
+WORKDIR /src
+COPY . .
+RUN CGO_ENABLED=0 GOOS=linux go build -ldflags="-s -w" -o app .
+
+FROM scratch
+COPY --from=builder /src/app /app
+USER 65532:65532   # nobody
+ENTRYPOINT ["/app"]

@@ -1,0 +1,23 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: lab
+    volumes:
+      - dbdata:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.distroless  # або alpine/slim
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    environment:
+      PGHOST: db
+
+volumes:
+  dbdata:
